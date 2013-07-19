@@ -20,6 +20,7 @@ public class MainActivity extends BaseActivity implements MessageHandler,
     private EditText editTextVariantId;
     private EditText editTextSenderId;
     private EditText editTextAlias;
+    private EditText editTextSecret;
     private TextView textViewOutput;
 
     @Override
@@ -38,6 +39,7 @@ public class MainActivity extends BaseActivity implements MessageHandler,
         editTextVariantId = (EditText) findViewById(R.id.editText_variantId);
         editTextSenderId = (EditText) findViewById(R.id.editText_senderId);
         editTextAlias = (EditText) findViewById(R.id.editText_alias);
+        editTextSecret = (EditText) findViewById(R.id.editText_secret);
         textViewOutput = (TextView) findViewById(R.id.textView_output);
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +53,7 @@ public class MainActivity extends BaseActivity implements MessageHandler,
                 config.variantId = editTextVariantId.getText().toString();
                 config.senderId = editTextSenderId.getText().toString();
                 config.alias = editTextAlias.getText().toString();
+                config.secret = editTextSecret.getText().toString();
 
                 if(isRegistered()) {
                     unregisterDeviceOnPushServer(config);
@@ -92,10 +95,40 @@ public class MainActivity extends BaseActivity implements MessageHandler,
 
     @Override
     public void onMessage(Context context, Bundle message) {
+
+        String text = "{";
+
+        for(String key : message.keySet()) {
+            if(!text.equals("{")) {
+                text += ", ";
+            }
+
+            text += "\"" + key + "\" : ";
+
+            Object object = message.get(key);
+            if(object instanceof Integer) {
+                text += object;
+            } else {
+                if(object instanceof String){
+                    try {
+                        int intValue = Integer.parseInt((String) object);
+                        text += intValue;
+                        continue;
+                    } catch(NumberFormatException e) {
+
+                    }
+                }
+                text += "\"" + object + "\"";
+            }
+        }
+        text += "}";
+
         if(!checkBoxAppendOutput.isChecked() || textViewOutput.getText().equals(getString(R.string.main_output_text))) {
-            textViewOutput.setText(message.toString());
+            textViewOutput.setText(text);
         } else {
-            textViewOutput.setText(message.toString() + "\n\n" + textViewOutput.getText());
+            textViewOutput.setText(text + "\n\n" + textViewOutput.getText());
+
+
         }
     }
 
@@ -146,5 +179,6 @@ public class MainActivity extends BaseActivity implements MessageHandler,
         editTextVariantId.setEnabled(enabled);
         editTextSenderId.setEnabled(enabled);
         editTextAlias.setEnabled(enabled);
+        editTextSecret.setEnabled(enabled);
     }
 }

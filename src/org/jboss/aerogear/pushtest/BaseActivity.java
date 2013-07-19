@@ -42,8 +42,9 @@ public class BaseActivity extends Activity {
             final Registrar registrar = new Registrar(registerURL);
 
             PushConfig pushConfig = new PushConfig(config.senderId);
-            pushConfig.setMobileVariantId(config.variantId);
+            pushConfig.setVariantID(config.variantId);
             pushConfig.setAlias(config.alias);
+            pushConfig.setSecret(config.secret);
 
             registrar.register(this, pushConfig, new Callback<Void>() {
                 @Override
@@ -125,6 +126,7 @@ public class BaseActivity extends Activity {
         public String senderId;
         public String variantId;
         public String alias;
+        public String secret;
     }
 
 }
