@@ -18,7 +18,8 @@
                 android:layout_margin="16dp"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="http://agpushmedium-arqtest.rhcloud.com/rest/registry/device" />
 
             <EditText
                 android:id="@+id/editText_variantId"
@@ -29,7 +30,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="014998fe-8967-4e97-9bac-bf5a2614fef0"/>
 
             <EditText
                 android:id="@+id/editText_senderId"
@@ -40,7 +42,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="489342927486" />
 
             <EditText
                 android:id="@+id/editText_alias"
@@ -62,7 +65,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="ffff21c6-2983-4b16-a318-a908f071a99f"/>
 
             <Button
                 android:id="@+id/button_register"

@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import org.jboss.aerogear.android.Callback;
+import org.jboss.aerogear.android.impl.unifiedpush.AeroGearGCMPushRegistrar;
 import org.jboss.aerogear.android.unifiedpush.PushConfig;
-import org.jboss.aerogear.android.unifiedpush.Registrar;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,14 +39,14 @@ public class BaseActivity extends Activity {
     protected void registerDeviceOnPushServer(final Config config) {
         try {
             final URL registerURL = new URL(config.host);
-            final Registrar registrar = new Registrar(registerURL);
 
-            PushConfig pushConfig = new PushConfig(config.senderId);
+            PushConfig pushConfig = new PushConfig(registerURL, config.senderId);
             pushConfig.setVariantID(config.variantId);
             pushConfig.setAlias(config.alias);
             pushConfig.setSecret(config.secret);
 
-            registrar.register(this, pushConfig, new Callback<Void>() {
+            final AeroGearGCMPushRegistrar registrar = new AeroGearGCMPushRegistrar(pushConfig);
+            registrar.register(this, new Callback<Void>() {
                 @Override
                 public void onSuccess(Void ignore) {
                     registered = true;
@@ -72,12 +72,12 @@ public class BaseActivity extends Activity {
 
     protected void unregisterDeviceOnPushServer(final Config config) {
         if(onUnregistrationFailedListener != null) {
-            onUnregistrationFailedListener.onUnregistrationFiled(new RuntimeException("Not implemented!"));
+            onUnregistrationFailedListener.onUnregistrationFailed(new RuntimeException("Not implemented!"));
         }
 
         try {
             final URL registerURL = new URL(config.host);
-            final Registrar registrar = new Registrar(registerURL);
+           // final Registrar registrar = new Registrar(registerURL);
 
 
         } catch(MalformedURLException e) {
@@ -118,7 +118,7 @@ public class BaseActivity extends Activity {
     }
 
     public static interface OnUnregistrationFailedListener {
-        public void onUnregistrationFiled(Exception e);
+        public void onUnregistrationFailed(Exception e);
     }
 
     public static class Config {

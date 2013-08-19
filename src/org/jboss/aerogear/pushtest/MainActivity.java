@@ -8,7 +8,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import org.jboss.aerogear.android.unifiedpush.MessageHandler;
-import org.jboss.aerogear.android.unifiedpush.Registrar;
+import org.jboss.aerogear.android.unifiedpush.Registrations;
 
 public class MainActivity extends BaseActivity implements MessageHandler,
         BaseActivity.OnRegistrationSuccessListener, BaseActivity.OnRegistrationFailedListener,
@@ -79,7 +79,7 @@ public class MainActivity extends BaseActivity implements MessageHandler,
     @Override
     protected void onResume() {
         super.onResume();
-        Registrar.registerMainThreadHandler(this);
+        Registrations.registerMainThreadHandler(this);
         if(isRegistered()) {
             buttonRegister.setEnabled(true);
             buttonRegister.setText(R.string.main_unregister);
@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity implements MessageHandler,
     @Override
     protected void onPause() {
         super.onPause();
-        Registrar.unregisterMainThreadHandler(this);
+        Registrations.unregisterMainThreadHandler(this);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity implements MessageHandler,
     }
 
     @Override
-    public void onUnregistrationFiled(Exception e) {
+    public void onUnregistrationFailed(Exception e) {
         buttonRegister.setEnabled(true);
     }
 
