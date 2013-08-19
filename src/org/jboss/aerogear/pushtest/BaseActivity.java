@@ -1,14 +1,17 @@
 package org.jboss.aerogear.pushtest;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import org.jboss.aerogear.android.Callback;
 import org.jboss.aerogear.android.impl.unifiedpush.AeroGearGCMPushRegistrar;
 import org.jboss.aerogear.android.unifiedpush.PushConfig;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
 
 public class BaseActivity extends Activity {
     private static final String TAG = BaseActivity.class.getSimpleName();
@@ -38,7 +41,7 @@ public class BaseActivity extends Activity {
 
     protected void registerDeviceOnPushServer(final Config config) {
         try {
-            final URL registerURL = new URL(config.host);
+            final URI registerURL = new URI(config.host);
 
             PushConfig pushConfig = new PushConfig(registerURL, config.senderId);
             pushConfig.setVariantID(config.variantId);
@@ -65,7 +68,7 @@ public class BaseActivity extends Activity {
                 }
             });
 
-        } catch(MalformedURLException e) {
+        } catch(URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
