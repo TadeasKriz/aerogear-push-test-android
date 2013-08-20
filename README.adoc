@@ -1,0 +1,26 @@
+= Android Testing Application for UnifiedPush Server Test Automation
+
+== Usage in IDE
+
+=== IntelliJ IDEA
+
+Import as Maven project
+
+=== Eclipse
+
+Following these guides:
+
+1. https://gist.github.com/danielpassos/288b524d0ffb91f1c42c
+1. http://aerogear.org/docs/guides/GetStartedAndroidEclipse
+
+Note, you might also need to add gcm-client to Maven SDK Deployer if you happen to be using Aerogear 1.2.0 release. This is fixed in 1.2.1-SNAPSHOT onwards.
+
+== How to install application to the device?
+
+[source,bash]
+mvn clean package
+adb get-serialno
+adb -s {serialno} -e install target/path/to/apk
+
+
+
