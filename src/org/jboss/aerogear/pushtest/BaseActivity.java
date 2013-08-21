@@ -7,7 +7,10 @@ import java.net.URL;
 
 import org.jboss.aerogear.android.Callback;
 import org.jboss.aerogear.android.impl.unifiedpush.AeroGearGCMPushRegistrar;
+import org.jboss.aerogear.android.impl.unifiedpush.DefaultPushRegistrarFactory;
 import org.jboss.aerogear.android.unifiedpush.PushConfig;
+import org.jboss.aerogear.android.unifiedpush.PushRegistrar;
+import org.jboss.aerogear.android.unifiedpush.Registrations;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -41,14 +44,16 @@ public class BaseActivity extends Activity {
 
     protected void registerDeviceOnPushServer(final Config config) {
         try {
-            final URI registerURL = new URI(config.host);
+            Registrations registrations = new Registrations();
 
-            PushConfig pushConfig = new PushConfig(registerURL, config.senderId);
+            PushConfig pushConfig = new PushConfig(new URI(config.host), config.senderId);
             pushConfig.setVariantID(config.variantId);
             pushConfig.setAlias(config.alias);
             pushConfig.setSecret(config.secret);
 
-            final AeroGearGCMPushRegistrar registrar = new AeroGearGCMPushRegistrar(pushConfig);
+            PushRegistrar registrar = registrations.push("registrar", pushConfig);
+            
+
             registrar.register(this, new Callback<Void>() {
                 @Override
                 public void onSuccess(Void ignore) {
@@ -79,11 +84,11 @@ public class BaseActivity extends Activity {
         }
 
         try {
-            final URL registerURL = new URL(config.host);
+            final URI registerURL = new URI(config.host);
            // final Registrar registrar = new Registrar(registerURL);
 
 
-        } catch(MalformedURLException e) {
+        } catch(URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
