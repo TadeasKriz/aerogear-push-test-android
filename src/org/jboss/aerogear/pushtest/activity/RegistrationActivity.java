@@ -1,23 +1,20 @@
-package org.jboss.aerogear.pushtest;
+package org.jboss.aerogear.pushtest.activity;
 
-import org.jboss.aerogear.android.unifiedpush.MessageHandler;
-import org.jboss.aerogear.android.unifiedpush.Registrations;
-import org.jboss.aerogear.pushtest.util.JsonBundleUtil;
+import android.content.Intent;
+import org.jboss.aerogear.pushtest.BaseActivity;
+import org.jboss.aerogear.pushtest.R;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends BaseActivity implements MessageHandler, BaseActivity.OnRegistrationSuccessListener,
+public class RegistrationActivity extends BaseActivity implements BaseActivity.OnRegistrationSuccessListener,
         BaseActivity.OnRegistrationFailedListener, BaseActivity.OnUnregistrationSuccessListener,
         BaseActivity.OnUnregistrationFailedListener {
 
     private Button buttonRegister;
-    private CheckBox checkBoxAppendOutput;
     private EditText editTextPushServer;
     private EditText editTextVariantId;
     private EditText editTextSenderId;
@@ -28,7 +25,7 @@ public class MainActivity extends BaseActivity implements MessageHandler, BaseAc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.registration_activity);
 
         setOnRegistrationSuccessListener(this);
         setOnRegistrationFailedListener(this);
@@ -36,7 +33,6 @@ public class MainActivity extends BaseActivity implements MessageHandler, BaseAc
         setOnUnregistrationFailedListener(this);
 
         buttonRegister = (Button) findViewById(R.id.button_register);
-        checkBoxAppendOutput = (CheckBox) findViewById(R.id.checkBox_appendOutput);
         editTextPushServer = (EditText) findViewById(R.id.editText_pushServer);
         editTextVariantId = (EditText) findViewById(R.id.editText_variantId);
         editTextSenderId = (EditText) findViewById(R.id.editText_senderId);
@@ -81,7 +77,6 @@ public class MainActivity extends BaseActivity implements MessageHandler, BaseAc
     @Override
     protected void onResume() {
         super.onResume();
-        Registrations.registerMainThreadHandler(this);
         if (isRegistered()) {
             buttonRegister.setEnabled(true);
             buttonRegister.setText(R.string.main_unregister);
@@ -90,38 +85,11 @@ public class MainActivity extends BaseActivity implements MessageHandler, BaseAc
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        Registrations.unregisterMainThreadHandler(this);
-    }
-
-    @Override
-    public void onMessage(Context context, Bundle message) {
-
-        String newText = JsonBundleUtil.asJsonPrettyPrint(message);
-
-        if (!checkBoxAppendOutput.isChecked() || textViewOutput.getText().equals(getString(R.string.main_output_text))) {
-            textViewOutput.setText(newText);
-        } else {
-            textViewOutput.setText(newText + "\n\n" + textViewOutput.getText());
-
-        }
-    }
-
-    @Override
-    public void onDeleteMessage(Context context, Bundle message) {
-
-    }
-
-    @Override
-    public void onError() {
-
-    }
-
-    @Override
     public void onRegistrationSuccess() {
         buttonRegister.setEnabled(true);
         buttonRegister.setText(R.string.main_unregister);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override

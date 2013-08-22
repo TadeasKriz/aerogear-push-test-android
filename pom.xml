@@ -22,6 +22,12 @@
             <scope>provided</scope>
         </dependency>
 
+<!--        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>suport-v4</artifactId>
+            <version>r7</version>
+        </dependency>-->
+
         <dependency>
             <groupId>org.jboss.aerogear</groupId>
             <artifactId>aerogear-android</artifactId>
