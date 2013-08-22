@@ -1,5 +1,9 @@
 package org.jboss.aerogear.pushtest;
 
+import org.jboss.aerogear.android.unifiedpush.MessageHandler;
+import org.jboss.aerogear.android.unifiedpush.Registrations;
+import org.jboss.aerogear.pushtest.util.JsonBundleUtil;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -7,12 +11,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import org.jboss.aerogear.android.unifiedpush.MessageHandler;
-import org.jboss.aerogear.android.unifiedpush.Registrations;
 
-public class MainActivity extends BaseActivity implements MessageHandler,
-        BaseActivity.OnRegistrationSuccessListener, BaseActivity.OnRegistrationFailedListener,
-        BaseActivity.OnUnregistrationSuccessListener, BaseActivity.OnUnregistrationFailedListener {
+public class MainActivity extends BaseActivity implements MessageHandler, BaseActivity.OnRegistrationSuccessListener,
+        BaseActivity.OnRegistrationFailedListener, BaseActivity.OnUnregistrationSuccessListener,
+        BaseActivity.OnUnregistrationFailedListener {
 
     private Button buttonRegister;
     private CheckBox checkBoxAppendOutput;
@@ -55,7 +57,7 @@ public class MainActivity extends BaseActivity implements MessageHandler,
                 config.alias = editTextAlias.getText().toString();
                 config.secret = editTextSecret.getText().toString();
 
-                if(isRegistered()) {
+                if (isRegistered()) {
                     unregisterDeviceOnPushServer(config);
                 } else {
                     registerDeviceOnPushServer(config);
@@ -80,7 +82,7 @@ public class MainActivity extends BaseActivity implements MessageHandler,
     protected void onResume() {
         super.onResume();
         Registrations.registerMainThreadHandler(this);
-        if(isRegistered()) {
+        if (isRegistered()) {
             buttonRegister.setEnabled(true);
             buttonRegister.setText(R.string.main_unregister);
             disableEditTexts();
@@ -96,38 +98,12 @@ public class MainActivity extends BaseActivity implements MessageHandler,
     @Override
     public void onMessage(Context context, Bundle message) {
 
-        String text = "{";
+        String newText = JsonBundleUtil.asJsonPrettyPrint(message);
 
-        for(String key : message.keySet()) {
-            if(!text.equals("{")) {
-                text += ", ";
-            }
-
-            text += "\"" + key + "\" : ";
-
-            Object object = message.get(key);
-            if(object instanceof Integer) {
-                text += object;
-            } else {
-                if(object instanceof String){
-                    try {
-                        int intValue = Integer.parseInt((String) object);
-                        text += intValue;
-                        continue;
-                    } catch(NumberFormatException e) {
-
-                    }
-                }
-                text += "\"" + object + "\"";
-            }
-        }
-        text += "}";
-
-        if(!checkBoxAppendOutput.isChecked() || textViewOutput.getText().equals(getString(R.string.main_output_text))) {
-            textViewOutput.setText(text);
+        if (!checkBoxAppendOutput.isChecked() || textViewOutput.getText().equals(getString(R.string.main_output_text))) {
+            textViewOutput.setText(newText);
         } else {
-            textViewOutput.setText(text + "\n\n" + textViewOutput.getText());
-
+            textViewOutput.setText(newText + "\n\n" + textViewOutput.getText());
 
         }
     }
