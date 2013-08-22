@@ -1,95 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
 
     <ScrollView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
             <EditText
                 android:id="@+id/editText_pushServer"
-                android:imeOptions="actionNext"
-                android:inputType="textUri"
-                android:hint="@string/main_pushServer_hint"
-                android:layout_margin="16dp"
-                android:marqueeRepeatLimit="marquee_forever"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="https://agpushmedium-arqtest.rhcloud.com"
-                 />
+                android:layout_margin="16dp"
+                android:hint="@string/main_pushServer_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textUri"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:text="https://agpushmedium-arqtest.rhcloud.com" />
 
             <EditText
                 android:id="@+id/editText_variantId"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:hint="@string/main_variantId_hint"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="f574b6d3-3bf5-4ce5-99ed-51b809e2fe9e"
-                />
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/main_variantId_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:text="f574b6d3-3bf5-4ce5-99ed-51b809e2fe9e" />
 
             <EditText
                 android:id="@+id/editText_senderId"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:hint="@string/main_senderId_hint"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="489342927486"
-                />
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/main_senderId_hint"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:text="489342927486" />
 
             <EditText
                 android:id="@+id/editText_alias"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:hint="@string/main_alias_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:hint="@string/main_alias_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions" />
 
             <EditText
                 android:id="@+id/editText_secret"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:hint="@string/main_secret_hint"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/main_secret_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
                 android:text="8b4ee5f6-d128-4850-a820-1296b38ab930" />
 
             <Button
                 android:id="@+id/button_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
-                android:text="@string/main_register"
-                android:layout_gravity="center_horizontal" />
-
-            <TextView
-                android:id="@+id/textView_output"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="false"
-                android:text="@string/main_output_text"/>
+                android:text="@string/main_register" />
         </LinearLayout>
     </ScrollView>
 

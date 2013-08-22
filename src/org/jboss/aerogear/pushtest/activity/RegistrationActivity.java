@@ -1,14 +1,13 @@
 package org.jboss.aerogear.pushtest.activity;
 
-import android.content.Intent;
 import org.jboss.aerogear.pushtest.BaseActivity;
 import org.jboss.aerogear.pushtest.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class RegistrationActivity extends BaseActivity implements BaseActivity.OnRegistrationSuccessListener,
         BaseActivity.OnRegistrationFailedListener, BaseActivity.OnUnregistrationSuccessListener,
@@ -20,7 +19,6 @@ public class RegistrationActivity extends BaseActivity implements BaseActivity.O
     private EditText editTextSenderId;
     private EditText editTextAlias;
     private EditText editTextSecret;
-    private TextView textViewOutput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,6 @@ public class RegistrationActivity extends BaseActivity implements BaseActivity.O
         editTextSenderId = (EditText) findViewById(R.id.editText_senderId);
         editTextAlias = (EditText) findViewById(R.id.editText_alias);
         editTextSecret = (EditText) findViewById(R.id.editText_secret);
-        textViewOutput = (TextView) findViewById(R.id.textView_output);
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,13 +62,11 @@ public class RegistrationActivity extends BaseActivity implements BaseActivity.O
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("textViewOutput_text", textViewOutput.getText().toString());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        textViewOutput.setText(savedInstanceState.getString("textViewOutput_text", getString(R.string.main_output_text)));
     }
 
     @Override

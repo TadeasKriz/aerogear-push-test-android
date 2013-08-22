@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">AerogearPushTest</string>
     <string name="main_pushServer_hint">Push server (e.g. http://localhost:8080/ag-push/rest/registry/device)</string>
     <string name="main_variantId_hint">Variant id (from push server)</string>
@@ -9,5 +10,8 @@
     <string name="main_register">Register</string>
     <string name="main_unregister">Unregister</string>
     <string name="main_appendOutput">Append new messages</string>
-    <string name="main_output_text">New messages will be shown here. When "Append new messages" is not checked, messages are rewriten as they arrive. If checked, every new message will be added at the begining of this text.</string>
+    <string name="main_output_text">No new messaged yet delivered.</string>
+    <string name="performance_output_text">No new messages yet delivered.</string>
+    <string name="performance_stats">Stats</string>
+
 </resources>
