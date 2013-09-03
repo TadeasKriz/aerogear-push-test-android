@@ -7,6 +7,8 @@
     <string name="main_senderId_hint">Sender id (from Google)</string>
     <string name="main_alias_hint">Alias (e.g. user\'s email)</string>
     <string name="main_secret_hint">Secret (from push server)</string>
+    <string name="main_preloadUrl_hint">Preload fields from url (JSON)</string>
+    <string name="main_preload">Load</string>
     <string name="main_register">Register</string>
     <string name="main_unregister">Unregister</string>
     <string name="main_appendOutput">Append new messages</string>

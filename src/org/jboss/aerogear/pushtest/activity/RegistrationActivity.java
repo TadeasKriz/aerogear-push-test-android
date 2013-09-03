@@ -3,17 +3,28 @@ package org.jboss.aerogear.pushtest.activity;
 import org.jboss.aerogear.pushtest.BaseActivity;
 import org.jboss.aerogear.pushtest.R;
 
+import android.os.AsyncTask;
+import org.jboss.aerogear.android.http.HeaderAndBody;
+import org.jboss.aerogear.android.impl.http.HttpRestProvider;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URI;
 
 public class RegistrationActivity extends BaseActivity implements BaseActivity.OnRegistrationSuccessListener,
         BaseActivity.OnRegistrationFailedListener, BaseActivity.OnUnregistrationSuccessListener,
         BaseActivity.OnUnregistrationFailedListener {
 
+    private Button buttonPreload;
     private Button buttonRegister;
+    private EditText editTextPreloadUrl;
     private EditText editTextPushServer;
     private EditText editTextVariantId;
     private EditText editTextSenderId;
@@ -30,12 +41,80 @@ public class RegistrationActivity extends BaseActivity implements BaseActivity.O
         setOnUnregistrationSuccessListener(this);
         setOnUnregistrationFailedListener(this);
 
+        buttonPreload = (Button) findViewById(R.id.button_preload);
         buttonRegister = (Button) findViewById(R.id.button_register);
+        editTextPreloadUrl = (EditText) findViewById(R.id.editText_preloadUrl);
         editTextPushServer = (EditText) findViewById(R.id.editText_pushServer);
         editTextVariantId = (EditText) findViewById(R.id.editText_variantId);
         editTextSenderId = (EditText) findViewById(R.id.editText_senderId);
         editTextAlias = (EditText) findViewById(R.id.editText_alias);
         editTextSecret = (EditText) findViewById(R.id.editText_secret);
+
+        buttonPreload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonPreload.setEnabled(false);
+
+                new AsyncTask<Void, Void, JSONObject>() {
+
+                    @Override
+                    protected JSONObject doInBackground(Void... voids) {
+
+                        URI uri = URI.create(editTextPreloadUrl.getText().toString());
+
+                        try {
+                            HttpRestProvider httpRestProvider = new HttpRestProvider(uri.toURL());
+
+                            HeaderAndBody headerAndBody = httpRestProvider.get();
+
+                            String jsonString = new String(headerAndBody.getBody());
+
+                            JSONObject json = new JSONObject(jsonString);
+
+                            return json;
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                            return null;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected void onPostExecute(JSONObject json) {
+                        buttonPreload.setEnabled(true);
+
+                        if(json == null) {
+                            return;
+                        }
+
+                        if(json.has("url")) {
+                            editTextPushServer.setText(json.optString("url"));
+                        }
+
+                        if(json.has("variantID")) {
+                            editTextVariantId.setText(json.optString("variantID"));
+                        }
+
+                        if(json.has("senderID")) {
+                            editTextSenderId.setText(json.optString("senderID"));
+                        }
+
+                        if(json.has("alias")) {
+                            editTextAlias.setText(json.optString("alias"));
+                        }
+
+                        if(json.has("secret")) {
+                            editTextSecret.setText(json.optString("secret"));
+                        }
+
+                    }
+                }.execute();
+
+
+            }
+        });
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
