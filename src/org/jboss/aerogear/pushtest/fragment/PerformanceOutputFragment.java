@@ -16,12 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class PerformanceOutputFragment extends BaseFragment {
     private static final String TAG = PerformanceOutputFragment.class.getSimpleName();
 
-    private Button performanceStatsButton;
+    private Switch performanceStatsSwitch;
+    private Button performanceResetButton;
     private TextView outputTextView;
 
     private PushMessageDeliveryReport deliveryReport;
@@ -43,31 +46,41 @@ public class PerformanceOutputFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         outputTextView = (TextView) getView().findViewById(R.id.textView_output);
-        performanceStatsButton = (Button) getView().findViewById(R.id.button_stats);
+        performanceStatsSwitch = (Switch) getView().findViewById(R.id.switch_stats);
+        performanceResetButton = (Button) getView().findViewById(R.id.button_reset);
         deliveryReport = new PushMessageDeliveryReport();
 
-        performanceStatsButton.setOnClickListener(new View.OnClickListener() {
+        performanceStatsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    List<Integer> missingMessages = deliveryReport.missingMessages();
+                    StringBuilder sb = new StringBuilder("Total delivered messages: ");
+                    sb.append(deliveryReport.totalDeliveredMessages());
+
+                    if (missingMessages.size() > 0) {
+                        sb.append("\n\nTotal missing messages: ");
+                        sb.append(missingMessages.size());
+                        for (Integer msg : missingMessages) {
+                            sb.append("\n").append(msg);
+                        }
+                    }
+
+                    outputTextView.setText(sb.toString());
+                } else {
+                    outputTextView.setText(R.string.performance_output_text);
+                }
+            }
+        });
+
+        performanceResetButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-
-                List<Integer> missingMessages = deliveryReport.missingMessages();
-                StringBuilder sb = new StringBuilder("Total delivered messages: ");
-                sb.append(deliveryReport.totalDeliveredMessages());
-
-                if (missingMessages.size() > 0) {
-                    sb.append("\n\nTotal missing messages: ");
-                    sb.append(missingMessages.size());
-                    for (Integer msg : missingMessages) {
-                        sb.append("\n").append(msg);
-                    }
-                }
-
-                outputTextView.setText(sb.toString());
-
                 // reset delivery report
                 deliveryReport.reset();
             }
         });
+
     }
 
     @Override
@@ -80,7 +93,10 @@ public class PerformanceOutputFragment extends BaseFragment {
             int run = msg.getInt("run");
 
             deliveryReport.delivered(agent, process, thread, run);
-            outputTextView.setText(JsonBundleUtil.prettyPrint(msg));
+            // update text output only if not showing stats at the very same time
+            if (!performanceStatsSwitch.isChecked()) {
+                outputTextView.setText(JsonBundleUtil.prettyPrint(msg));
+            }
 
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
