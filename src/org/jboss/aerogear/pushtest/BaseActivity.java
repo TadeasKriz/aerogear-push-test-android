@@ -1,13 +1,9 @@
 package org.jboss.aerogear.pushtest;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.jboss.aerogear.android.Callback;
-import org.jboss.aerogear.android.impl.unifiedpush.AeroGearGCMPushRegistrar;
-import org.jboss.aerogear.android.impl.unifiedpush.DefaultPushRegistrarFactory;
 import org.jboss.aerogear.android.unifiedpush.PushConfig;
 import org.jboss.aerogear.android.unifiedpush.PushRegistrar;
 import org.jboss.aerogear.android.unifiedpush.Registrations;
@@ -85,6 +81,9 @@ public class BaseActivity extends Activity {
 
         try {
             final URI registerURL = new URI(config.host);
+
+
+
            // final Registrar registrar = new Registrar(registerURL);
 
 

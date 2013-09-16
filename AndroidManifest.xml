@@ -31,6 +31,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <category android:name="org.jboss.aerogear.pushtest"/>
             </intent-filter>
+            <meta-data android:name="DEFAULT_MESSAGE_HANDLER_KEY" android:value="org.jboss.aerogear.pushtest.NotificationHandler"/>
         </receiver>
 
     </application>

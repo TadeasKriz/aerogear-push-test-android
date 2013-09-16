@@ -1,5 +1,7 @@
 package org.jboss.aerogear.pushtest.activity;
 
+import android.util.Log;
+import android.widget.TextView;
 import org.jboss.aerogear.pushtest.BaseActivity;
 import org.jboss.aerogear.pushtest.R;
 
@@ -30,6 +32,7 @@ public class RegistrationActivity extends BaseActivity implements BaseActivity.O
     private EditText editTextSenderId;
     private EditText editTextAlias;
     private EditText editTextSecret;
+    private TextView textViewOutput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +52,14 @@ public class RegistrationActivity extends BaseActivity implements BaseActivity.O
         editTextSenderId = (EditText) findViewById(R.id.editText_senderId);
         editTextAlias = (EditText) findViewById(R.id.editText_alias);
         editTextSecret = (EditText) findViewById(R.id.editText_secret);
+        textViewOutput = (TextView) findViewById(R.id.textView_output);
 
         buttonPreload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 buttonPreload.setEnabled(false);
 
-                new AsyncTask<Void, Void, JSONObject>() {
+                new AsyncTask<Void, String, JSONObject>() {
 
                     @Override
                     protected JSONObject doInBackground(Void... voids) {
@@ -74,11 +78,22 @@ public class RegistrationActivity extends BaseActivity implements BaseActivity.O
                             return json;
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
+                            publishProgress(e.getMessage());
+                            return null;
+                        } catch (IllegalArgumentException e) {
+                            e.printStackTrace();
+                            publishProgress(e.getMessage());
                             return null;
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            publishProgress(e.getMessage());
                             return null;
                         }
+                    }
+
+                    @Override
+                    protected void onProgressUpdate(String... values) {
+                        textViewOutput.setText(values[0]);
                     }
 
                     @Override
@@ -168,6 +183,7 @@ public class RegistrationActivity extends BaseActivity implements BaseActivity.O
 
     @Override
     public void onRegistrationFailed(Exception e) {
+        textViewOutput.setText(e.getMessage());
         buttonRegister.setEnabled(true);
         enableEditTexts();
     }
